@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.11.0.final using JasperReports Library version 6.11.0-0c4056ccaa4d25a5a8c45672d2f764ea3498bebb  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Pedidos_por_Documento" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a31aa0ea-e897-4b90-95bd-ad904cca0244">
+	<property name="com.jaspersoft.studio.data.sql.tables">
+		<![CDATA[IlBST0RVQ1QiICw0MjEsNTEsNTBmNDVkZTQtMTVlYy00YzU4LTgwZDYtNzAyNjliMzA1NTMzOyJE
+T0NVTUVOVCIgLDE1Myw1MSw2MjVmMjYwOS0zYmU2LTRlOTktOTQ0ZS05NzcyMWMwYWY1Y2M7IlBP
+U0lUSU9OUyIgLDI3OSwyNiwzOGVmY2JhYS1kNTFiLTQ5MzktYjQ5MC1jN2UwZGRmOTE0ZjI7IkFE
+RFJFU1MiICwyNSwyNSxmNGQwYTA4Zi1hNDc0LTRlNDctYjYzOS05Zjk1YWNlYTllNzE7]]>
+	</property>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Sample DB"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT "DOCUMENT"."ID",
+	"ADDRESS"."FIRSTNAME",
+	"ADDRESS"."STREET",
+	"ADDRESS"."CITY",
+	"POSITIONS"."POSITIONNO",
+	"POSITIONS"."QUANTITY",
+	"POSITIONS"."PRICE",
+	"PRODUCT"."NAME",
+	"ADDRESS"."LASTNAME"
+FROM "ADDRESS",
+	"DOCUMENT",
+	"POSITIONS",
+	"PRODUCT"
+WHERE 
+	 "DOCUMENT"."ADDRESSID" = "ADDRESS"."ID" 
+	 AND "DOCUMENT"."ID" = "POSITIONS"."DOCUMENTID" 
+	 AND "POSITIONS"."PRODUCTID" = "PRODUCT"."ID" 
+ORDER BY "DOCUMENT"."ID" ASC,
+	"POSITIONS"."POSITIONNO" ASC]]>
+	</queryString>
+	<field name="ID" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="ID"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="DOCUMENT"/>
+	</field>
+	<field name="FIRSTNAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="FIRSTNAME"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ADDRESS"/>
+	</field>
+	<field name="STREET" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="STREET"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ADDRESS"/>
+	</field>
+	<field name="CITY" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CITY"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ADDRESS"/>
+	</field>
+	<field name="POSITIONNO" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="POSITIONNO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="POSITIONS"/>
+	</field>
+	<field name="QUANTITY" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="QUANTITY"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="POSITIONS"/>
+	</field>
+	<field name="PRICE" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="PRICE"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="POSITIONS"/>
+	</field>
+	<field name="NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NAME"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="PRODUCT"/>
+	</field>
+	<field name="LASTNAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="LASTNAME"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ADDRESS"/>
+	</field>
+	<variable name="ID1" class="java.lang.Integer" resetType="Group" resetGroup="Documento" calculation="Count">
+		<variableExpression><![CDATA[$F{ID}]]></variableExpression>
+	</variable>
+	<variable name="FIRSTNAME1" class="java.lang.Integer" resetType="Group" resetGroup="Documento" calculation="Count">
+		<variableExpression><![CDATA[$F{FIRSTNAME}]]></variableExpression>
+	</variable>
+	<variable name="Total" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[PRODUCT($F{QUANTITY},$F{PRICE})]]></variableExpression>
+	</variable>
+	<variable name="Line_Count" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$V{COLUMN_COUNT}]]></variableExpression>
+	</variable>
+	<group name="Documento">
+		<groupExpression><![CDATA[$F{ID}]]></groupExpression>
+		<groupHeader>
+			<band height="135">
+				<frame>
+					<reportElement mode="Opaque" x="0" y="0" width="154" height="24" backcolor="#A8A8A8" uuid="8ce94e85-b283-4374-8bfc-5da744cfe98f"/>
+					<staticText>
+						<reportElement x="0" y="0" width="100" height="24" uuid="201ee3a1-7c08-4ba9-97ba-b77c308c4fd0"/>
+						<textElement textAlignment="Left" verticalAlignment="Middle"/>
+						<text><![CDATA[Document Nº:]]></text>
+					</staticText>
+					<textField>
+						<reportElement x="100" y="0" width="54" height="24" uuid="b341d355-ec9a-4cc8-b6d8-764d0487d2b7"/>
+						<textElement textAlignment="Left" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{ID}]]></textFieldExpression>
+					</textField>
+				</frame>
+				<textField>
+					<reportElement x="50" y="24" width="100" height="30" uuid="5eb585b1-9a5e-48b5-a1f9-222b96f53573"/>
+					<textFieldExpression><![CDATA[$F{FIRSTNAME}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="50" y="54" width="100" height="30" uuid="a562d7ad-11e6-4cf3-b800-34f67ccaa065"/>
+					<textFieldExpression><![CDATA[$F{STREET}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="190" y="54" width="100" height="30" uuid="954444a7-62f8-4bf6-b214-802b5cc5f596"/>
+					<textFieldExpression><![CDATA[$F{CITY}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="50" y="100" width="70" height="30" uuid="07d548c3-724e-44a8-94db-ef768e9f6cac"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Linea]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="130" y="100" width="70" height="30" uuid="9d1dac45-0d71-4360-aa01-e215745c360d"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Producto]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="210" y="100" width="90" height="30" uuid="047297c5-5e68-4f34-a1ef-df3c089e5191"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Cantidad Unitaria]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="420" y="100" width="100" height="30" uuid="57669b5f-fc99-4c93-abbe-e63a78802a25"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Total]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="310" y="100" width="100" height="30" uuid="a191703d-5add-49d9-b4d6-e57d65ac1095"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Precio Unitario]]></text>
+				</staticText>
+				<line>
+					<reportElement x="0" y="130" width="555" height="1" uuid="97dc6cca-cebb-48b8-aad8-4f045a618456"/>
+				</line>
+				<textField>
+					<reportElement x="190" y="24" width="100" height="26" uuid="a12a311d-101a-454b-bf78-5ffacb3e0c40"/>
+					<textFieldExpression><![CDATA[$F{LASTNAME}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="48">
+				<line>
+					<reportElement x="0" y="40" width="555" height="1" uuid="e8433ddd-d95d-4e61-9552-efa5e3079b21"/>
+				</line>
+				<staticText>
+					<reportElement x="337" y="5" width="70" height="30" uuid="d9f30e07-03a5-4f75-b1a4-af8e745be056"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Total:]]></text>
+				</staticText>
+				<textField pattern="#,##0.##¤;#,##0.##- ¤">
+					<reportElement x="422" y="5" width="100" height="30" uuid="683acbd6-4c09-4ea6-8f26-c67a88b09141"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$V{Total}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="51" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="50" backcolor="#5EBAD6" uuid="f2c09660-20b1-4659-bac8-0e45037e8dce"/>
+				<staticText>
+					<reportElement x="170" y="0" width="220" height="50" uuid="121ad14c-4348-4373-98f7-5399ddd68bff"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="18" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Pedidos por documento]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="23" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="180" y="0" width="200" height="21" backcolor="#47787D" uuid="e6a92f11-2877-443d-8b24-74d5ccbfc314"/>
+				<staticText>
+					<reportElement x="0" y="0" width="200" height="20" forecolor="#FFFFFF" uuid="1003b73a-d107-4419-82fd-d95ed6f3814c"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12"/>
+					</textElement>
+					<text><![CDATA[Listados]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="33" splitType="Stretch">
+			<textField pattern="#,##0.00¤;#,##0.00- ¤">
+				<reportElement x="420" y="0" width="90" height="25" uuid="43043fae-93cb-4eaf-a279-56075ba4bbcf"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[PRODUCT($F{QUANTITY},$F{PRICE})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="130" y="0" width="70" height="25" uuid="1f699346-482b-4963-9e6a-1d4fb8bb247c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b1d3624b-e277-4cac-8f59-dca2ce2429f4"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="210" y="0" width="90" height="25" uuid="b281dd64-aba6-4e26-8ed6-75716ddbd5bd">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b12d6f70-a02e-44ca-a79f-8b08d53b7238"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{QUANTITY}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00¤;#,##0.00- ¤">
+				<reportElement x="310" y="0" width="90" height="25" uuid="f3123d88-b943-441b-81eb-f27c37e6684d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9dd4b2d1-2a0a-4b45-a1e3-30a9a91704fd"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{PRICE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="0" width="70" height="30" uuid="e2acb1d0-8536-4329-bfd8-bfd69e2ee6a0"/>
+				<textFieldExpression><![CDATA[$V{Line_Count}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="35" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="34" splitType="Stretch">
+			<staticText>
+				<reportElement x="40" y="0" width="48" height="30" uuid="ca75d9c2-0182-4dcb-b840-3525d9edd6a1"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Autor/a:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="0" width="150" height="30" uuid="5494d769-6e0a-4377-8cdb-d8c73cc2ac63"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[Marcos González León]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

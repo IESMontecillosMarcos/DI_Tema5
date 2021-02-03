@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="200" prefWidth="320" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="appinformes.FXMLDocumentController">
+    <children>
+        <Label fx:id="label" layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
+      <MenuBar layoutY="2.0" prefHeight="25.0" prefWidth="320.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Informes">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#onActionListadoFacturas" text="Listado Facturas" />
+                  <MenuItem mnemonicParsing="false" onAction="#onActionVentasTotales" text="Ventas Totales" />
+                  <MenuItem mnemonicParsing="false" onAction="#onActionFacturasCliente" text="Facturas Cliente (ID)" />
+                  <MenuItem mnemonicParsing="false" onAction="#onActionListadoFacturasSubinformes" text="Listado Facturas (SubInforme)" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit" />
+          <Menu mnemonicParsing="false" text="Help" />
+        </menus>
+      </MenuBar>
+    </children>
+</AnchorPane>

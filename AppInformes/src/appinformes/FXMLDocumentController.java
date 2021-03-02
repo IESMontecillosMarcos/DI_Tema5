@@ -9,11 +9,15 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -27,91 +31,108 @@ import net.sf.jasperreports.view.JasperViewer;
  * @author Marcos Gonzalez Leon
  */
 public class FXMLDocumentController implements Initializable {
-    
-    // Vars.
+
     private Connection conexion;
-    private String urlDB; 
-    
-    
-    @FXML
-    private Label label;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        conectaBD();
-        AppInformes.setConexion(conexion);
-        // TODO
+        
+        // Cargar conexion realizada al inicio.
+        conexion = AppInformes.getConnection();
     }
-    
-    public void createListadoFacturas() {
+
+    @FXML
+    private void onActionReport1(ActionEvent event) {
+        System.out.println(">> Listado Facturas...");
+        generaInforme1();    }
+
+    @FXML
+    private void onActionReport2(ActionEvent event) {
+        System.out.println(">> Ventas Totales...");
+        generaInforme2();
+    }
+
+    @FXML
+    private void onActionReport3(ActionEvent event) {
+        System.out.println(">> Facturas por Cliente...");
+        generaInforme3();
+    }
+
+    @FXML
+    private void onActionReport4(ActionEvent event) {
+        System.out.println(">> Listado Facturas (SubInformes)...");
+        generaInforme4();
+    }
+
+    public void generaInforme1() {
 
         try {
-            // POR AQUIA SJDALS d.
-            // Fallo al cargar el informe. Revisar jrxml?
-            JasperReport jr = (JasperReport) JRLoader.loadObject(AppInformes.class.getResource("facturas.jasper"));
-            
-            JasperPrint jp = (JasperPrint) JasperFillManager.fillReport(jr, null, conexion);
-            JasperViewer.viewReport(jp,false);
-        } catch (JRException ex) {
-            System.out.println("Error al recuperar el jasper");
-            JOptionPane.showMessageDialog(null, ex);
-        }
-    }
-    
-    public void createVentasTotales() {
-        try {
-            // Fallo al cargar el informe. Revisar jrxml? TAMBIEN!
-            JasperReport jr = (JasperReport) JRLoader.loadObject(AppInformes.class.getResource("ventastotales.jasper"));
-            
-            JasperPrint jp = (JasperPrint) JasperFillManager.fillReport(jr, null, conexion);
+            JasperReport jr = (JasperReport) JRLoader.loadObject(AppInformes.class.getResource("Pedidos_por_Documento.jasper"));
+            //Map de parámetros
+            Map parametros = new HashMap();
+
+            JasperPrint jp = (JasperPrint) JasperFillManager.fillReport(jr, parametros, conexion);
             JasperViewer.viewReport(jp, false);
         } catch (JRException ex) {
             System.out.println("Error al recuperar el jasper");
             JOptionPane.showMessageDialog(null, ex);
         }
     }
-   
-    public void conectaBD() {
-        //Establecemos conexión con la BD
-        urlDB = "jdbc:hsqldb:hsql://localhost:9001/xdb";
-        String usuario = "sa";
-        String clave = "";
+
+    public void generaInforme2() {
         try {
-            Class.forName("org.hsqldb.jdbcDriver").newInstance();
-            conexion = DriverManager.getConnection(urlDB, usuario, clave);
-        } catch (ClassNotFoundException cnfe) {
-            System.err.println("Fallo al cargar JDBC");
-            System.exit(1);
-        } catch (SQLException sqle) {
-            System.err.println("No se pudo conectar a BD");
-            System.exit(1);
-        } catch (java.lang.InstantiationException sqlex) {
-            System.err.println("Imposible Conectar");
-            System.exit(1);
-        } catch (Exception ex) {
-            System.err.println("Imposible Conectar");
-            System.exit(1);
+            JasperReport jr = (JasperReport) JRLoader.loadObject(AppInformes.class.getResource("Ventas_Totales.jasper"));
+            //Map de parámetros
+            Map parametros = new HashMap();
+
+            JasperPrint jp = (JasperPrint) JasperFillManager.fillReport(jr, parametros, conexion);
+            JasperViewer.viewReport(jp, false);
+        } catch (JRException ex) {
+            System.out.println("Error al recuperar el jasper");
+            JOptionPane.showMessageDialog(null, ex);
         }
     }
 
-    @FXML
-    private void onActionListadoFacturas(ActionEvent event) {
-        createListadoFacturas();
+    public void generaInforme3() {
+        int cod;
+        TextInputDialog tid = new TextInputDialog();
+        tid.setHeaderText("Introduzca ID del cliente.");
+        tid.setContentText("ID:");
+        String codString = tid.showAndWait().get();
+
+        // Comprueba si es un numero.
+        try {
+            cod = Integer.parseInt(codString);
+        } catch (NumberFormatException nfe) {
+            System.out.println("No es un numero");
+            return;
+        }
+
+        try {
+            JasperReport jr = (JasperReport) JRLoader.loadObject(AppInformes.class.getResource("Facturas_por_Cliente.jasper"));
+            //Map de parámetros
+            Map parametros = new HashMap();
+            parametros.put("codigo_cliente", cod);
+
+            JasperPrint jp = (JasperPrint) JasperFillManager.fillReport(jr, parametros, conexion);
+            JasperViewer.viewReport(jp, false);
+        } catch (JRException ex) {
+            System.out.println("Error al recuperar el jasper");
+            JOptionPane.showMessageDialog(null, ex);
+        }
     }
 
-    @FXML
-    private void onActionVentasTotales(ActionEvent event) {
-        createVentasTotales();
-    }
+    public void generaInforme4() {
+        try {
+            JasperReport jr = (JasperReport) JRLoader.loadObject(AppInformes.class.getResource("Pedidos_por_Documento_SubInf.jasper"));
+            JasperReport jsr = (JasperReport) JRLoader.loadObject(AppInformes.class.getResource("SubInforme_PedDoc.jasper"));
+            Map parametros = new HashMap();
+            parametros.put("subReportParameter", jsr);
+            JasperPrint jp = (JasperPrint) JasperFillManager.fillReport(jr, parametros, conexion);
+            JasperViewer.viewReport(jp, false);
+        } catch (JRException ex) {
+            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-    @FXML
-    private void onActionFacturasCliente(ActionEvent event) {
-        
     }
-
-    @FXML
-    private void onActionListadoFacturasSubinformes(ActionEvent event) {
-        
-    }
-    
 }
